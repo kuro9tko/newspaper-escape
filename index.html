@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新聞からの脱出</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>新聞からの脱出</h1>
+
+    <p class="message">
+      あなたは新聞の中に閉じ込められた。<br>
+      創刊の年を入力し、未来への扉を開け。
+    </p>
+
+    <input
+      type="text"
+      id="answer"
+      maxlength="4"
+      inputmode="numeric"
+      placeholder="????"
+    >
+
+    <button id="submitBtn">ENTER</button>
+
+    <p id="result"></p>
+
+  </div>
+
+  <audio id="openSound" src="assets/open.mp3"></audio>
+  <audio id="printSound" src="assets/print.mp3"></audio>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
