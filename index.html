@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>新聞からの脱出</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-  <link rel="stylesheet" href="style.css">
+  <title>65周年</title>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="container">
+  <div id="message">
+    「箱」に触れてください
+  </div>
 
-    <h1>新聞からの脱出</h1>
+  <div id="game-container"></div>
 
-    <p class="message">
-      あなたは新聞の中に閉じ込められた。<br>
-      創刊の年を入力し、未来への扉を開け。
-    </p>
+  <div id="controls">
 
-    <input
-      type="text"
-      id="answer"
-      maxlength="4"
-      inputmode="numeric"
-      placeholder="????"
-    >
+    <button class="move" onclick="move(0,-1)">↑</button>
 
-    <button id="submitBtn">ENTER</button>
+    <div class="middle">
+      <button class="move" onclick="move(-1,0)">←</button>
 
-    <p id="result"></p>
+      <button id="restart" onclick="initGame()">
+        RESTART
+      </button>
+
+      <button class="move" onclick="move(1,0)">→</button>
+    </div>
+
+    <button class="move" onclick="move(0,1)">↓</button>
 
   </div>
 
-  <audio id="openSound" src="assets/open.mp3"></audio>
-  <audio id="printSound" src="assets/print.mp3"></audio>
+  <div id="overlay">
+    <div id="clear-text">
+      次の65年へ。<br><br>
+      65周年ありがとうございます。
+    </div>
+  </div>
 
   <script src="app.js"></script>
 

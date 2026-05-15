@@ -1,80 +1,123 @@
 body {
   margin: 0;
-  padding: 0;
+  background: black;
+  color: white;
+  font-family: monospace;
 
-  font-family: serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  background-image: url("assets/paper.jpg");
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+}
 
-  color: #222;
+#message {
+  margin-top: 20px;
+  min-height: 30px;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
 
-  height: 100vh;
+#game-container {
+  margin-top: 20px;
+
+  display: grid;
+  gap: 2px;
+
+  border: 2px solid white;
+  padding: 6px;
+}
+
+.tile {
+  width: 42px;
+  height: 42px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+
+  font-size: 24px;
+  user-select: none;
 }
 
-.container {
-  width: 90%;
-  max-width: 500px;
-
-  background: rgba(255,255,255,0.75);
-
-  padding: 32px;
-
-  border: 2px solid #222;
-
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-
-  text-align: center;
+.wall {
+  color: #666;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 24px;
+.player {
+  color: white;
 }
 
-.message {
-  line-height: 1.8;
-  margin-bottom: 24px;
+.box,
+.key {
+  border: 1px solid white;
 }
 
-input {
-  width: 160px;
+.slot {
+  border: 1px dashed white;
+}
 
-  font-size: 2rem;
-  text-align: center;
+.plus {
+  font-family: serif;
+}
 
-  padding: 12px;
+#controls {
+  margin-top: 30px;
 
-  border: 2px solid #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  background: #f8f1df;
+  gap: 10px;
+}
+
+.middle {
+  display: flex;
+  gap: 10px;
 }
 
 button {
-  display: block;
+  width: 70px;
+  height: 55px;
 
-  margin: 24px auto 0;
-
-  padding: 12px 24px;
-
-  font-size: 1rem;
-
-  background: #222;
+  background: black;
   color: white;
 
-  border: none;
+  border: 1px solid white;
 
-  cursor: pointer;
+  font-size: 18px;
 }
 
-#result {
-  margin-top: 24px;
+button:active {
+  background: white;
+  color: black;
+}
 
-  font-size: 1.2rem;
-  font-weight: bold;
+#restart {
+  width: 120px;
+}
+
+#overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background: black;
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  font-size: 32px;
+
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.7;
+  }
 }
