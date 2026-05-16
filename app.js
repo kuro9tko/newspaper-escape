@@ -32,7 +32,10 @@ function initGame() {
 
   playerPos = { x: 1, y: 6 };
 
+  slotsActive = false; // 追加：リスタート時に欄の出現状態をリセット
+
   document.getElementById("overlay").style.display = "none";
+  document.getElementById("message").style.color = "white"; // ついでに色も戻す
 
   setMessage("「箱」に触れてください");
 
