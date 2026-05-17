@@ -1,30 +1,185 @@
 const EMPTY = "　";
 const WALL = "壁";
-const PLAYER = "私";
-const BOX = "箱";
+const TREE = "木";
+const PUSH_TREE = "押木";
+
+const MOUNTAIN = "山";
+const SOIL = "土";
+const WATER = "水";
+
+const PLAYER = "吾";
 const KEY = "鍵";
-const DOOR = "扉";
-const SLOT = "欄";
+const DOOR = "門";      // ゴール
+const SLOT = "⬜︎";
 
 const SIX = "六";
 const FIVE = "五";
 const PLUS = "＋";
+const DIVIDE = "÷";
 
-const initialMap = [
-  [WALL,WALL,WALL,WALL,DOOR,WALL,WALL,WALL,WALL],
-  [WALL,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,WALL],
-  [WALL,EMPTY,SIX,EMPTY,PLUS,EMPTY,FIVE,EMPTY,WALL],
-  [WALL,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,WALL],
-  [WALL,EMPTY,EMPTY,EMPTY,BOX,EMPTY,EMPTY,EMPTY,WALL],
-  [WALL,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,WALL],
-  [WALL,PLAYER,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,WALL],
-  [WALL,WALL,WALL,WALL,WALL,WALL,WALL,WALL,WALL]
+const KANE = "金";
+const KEN = "建";
+const TAKAI = "喬";
+const BRIDGE = "橋";
+
+const SHI = "士";
+const JOU = "冗";
+const URI = "売";
+
+const TATSU = "立";
+const MOKU = "木";
+const MOKU_PART = "木部";
+const SHIN_LEFT = "亲"; // 立 + 木 でできる中間部品
+const KIN = "斤";
+const SHIN = "新";
+
+const MON_PART = "門部"; // 見た目は「門」、合成用
+const MIMI = "耳";
+const KIKU = "聞";
+
+const DOKU = "読";
+
+const stages = [
+  {
+    name: "吾を動かし、鍵でひらく",
+    message: "鍵でひらく？",
+    clearMessage: "門がひらいた。",
+    map: [
+      [TREE,TREE,TREE,WALL,DOOR,WALL,TREE,TREE,TREE],
+      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
+      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
+      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
+      [TREE,TREE,TREE,WALL,KEY,WALL,TREE,TREE,TREE],
+      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
+      [TREE,TREE,TREE,WALL,PLAYER,WALL,TREE,TREE,TREE],
+      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
+      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
+    ],
+  },
+  {
+    name: "鍵と橋",
+    message: "組み合わる？",
+    clearMessage: "門がひらいた。",
+    map: [
+      [MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN],
+      [MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,KEN,EMPTY,EMPTY],
+      [EMPTY,EMPTY,KANE,SLOT,PLUS,SLOT,EMPTY,EMPTY,DOOR],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [SOIL,SOIL,SLOT,PLUS,TAKAI,BRIDGE,WATER,WATER,WATER],
+      [TREE,TREE,PUSH_TREE,EMPTY,EMPTY,EMPTY,WATER,WATER,WATER],
+      [TREE,TREE,EMPTY,EMPTY,PLAYER,EMPTY,WATER,WATER,WATER],
+    ],
+    combineRules: [
+      {
+        left: KANE,
+        connector: PLUS,
+        right: KEN,
+        result: KEY,
+        message: "鍵ができた。"
+      },
+      {
+        left: PUSH_TREE,
+        connector: PLUS,
+        right: TAKAI,
+        result: BRIDGE,
+        message: "橋ができた。"
+      }
+    ]
+  },
+  {
+    name: "読売新聞",
+    message: "キーワードが鍵？",
+    clearMessage: "門がひらいた。",
+    map: [
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,TATSU,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,SHI,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,MON_PART,EMPTY],
+      [EMPTY,EMPTY,SLOT,EMPTY,SLOT,EMPTY,EMPTY,EMPTY,EMPTY],
+      [PLAYER,DOKU,PLUS,EMPTY,PLUS,SLOT,EMPTY,PLUS,EMPTY],
+      [EMPTY,JOU,SLOT,EMPTY,SLOT,PLUS,KIN,SLOT,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,MOKU_PART,EMPTY,EMPTY,MIMI,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,DOOR,EMPTY,EMPTY,EMPTY,EMPTY],
+    ],
+    combineRules: [
+      {
+        left: SHI,
+        connector: PLUS,
+        right: JOU,
+        result: URI,
+        direction: "vertical",
+        message: "売ができた。"
+      },
+      {
+        left: TATSU,
+        connector: PLUS,
+        right: MOKU_PART,
+        result: SHIN_LEFT,
+        direction: "vertical",
+        message: "字の一部ができた。"
+      },
+      {
+        left: SHIN_LEFT,
+        connector: PLUS,
+        right: KIN,
+        result: SHIN,
+        direction: "horizontal",
+        message: "新ができた。"
+      },
+      {
+        left: MON_PART,
+        connector: PLUS,
+        right: MIMI,
+        result: KIKU,
+        direction: "vertical",
+        message: "聞ができた。"
+      }
+    ],
+    keywordRule: {
+      word: [DOKU, URI, SHIN, KIKU],
+      result: KEY,
+      spawn: { x: 5, y: 8 },
+      message: "読売新聞。鍵が見つかった。"
+    }
+  },
+  {
+    name: "六五",
+    message: "何を割る？",
+    clearMessage: "65周年、そしてその先へ。皆様に心から感謝申し上げます。",
+    map: [
+      [EMPTY,EMPTY,EMPTY,EMPTY,PLAYER,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,SLOT,EMPTY,EMPTY],
+      [EMPTY,EMPTY,SIX,EMPTY,EMPTY,EMPTY,DIVIDE,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,SLOT,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+    ],
+    splitRule: {
+      source: PLAYER,
+      topSlot: { x: 6, y: 3 },
+      connector: { x: 6, y: 4 },
+      bottomSlot: { x: 6, y: 5 },
+      resultPlayer: FIVE,
+      message: "吾は五になった。"
+    },
+    finalKeywordRule: {
+      left: SIX,
+      right: FIVE,
+      message: "六五"
+    }
+  }
 ];
 
-let map;
+let currentStageIndex = 0;
+let map = [];
 let playerPos;
-
-let slotsActive = false;
+let currentPlayerChar = PLAYER;
+let playerStartHintActive = false;
 
 let bgmStarted = false;
 
@@ -36,6 +191,8 @@ const sounds = {
   gameover: new Audio("audio/gameover.mp3"),
   clear: new Audio("audio/clear.mp3")
 };
+
+const DEBUG_START_STAGE = 0;
 
 sounds.bgm.loop = true;
 sounds.bgm.volume = 0.35;
@@ -62,10 +219,60 @@ function playSound(name) {
   sound.play().catch(() => {});
 }
 
-function initGame() {
-  map = JSON.parse(JSON.stringify(initialMap));
+function cloneMap(sourceMap) {
+  return sourceMap.map(row => [...row]);
+}
 
-  playerPos = { x: 1, y: 6 };
+function findPlayer() {
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map[y].length; x++) {
+      if (map[y][x] === currentPlayerChar) {
+        return { x, y };
+      }
+    }
+  }
+
+  console.error("PLAYER が見つかりません", currentPlayerChar, map);
+  return { x: 1, y: 1 };
+}
+
+function isInsideMap(x, y) {
+  return (
+    y >= 0 &&
+    y < map.length &&
+    x >= 0 &&
+    x < map[y].length
+  );
+}
+
+function startStage(index) {
+  currentStageIndex = index;
+
+  const stage = stages[currentStageIndex];
+
+  currentPlayerChar = PLAYER;
+  playerStartHintActive = true;
+
+  if (stage.keywordRule) {
+    stage.keywordRule.done = false;
+  }
+
+  if (stage.splitRule) {
+    stage.splitRule.done = false;
+  }
+
+  if (stage.finalKeywordRule) {
+    stage.finalKeywordRule.done = false;
+  }
+
+  map = cloneMap(stage.map);
+
+  playerPos = findPlayer();
+
+  setTimeout(() => {
+    playerStartHintActive = false;
+    draw();
+  }, 1200);
 
   slotsActive = false;
 
@@ -81,19 +288,29 @@ function initGame() {
   }
 
   const message = document.getElementById("message");
-  message.style.color = "white";
+  if (message) {
+    message.style.color = "white";
+  }
 
-  setMessage("「箱」に触れてください");
+  setMessage(stage.message);
 
-  console.log("initGame 実行");
+  console.log("startStage 実行", currentStageIndex);
   console.log(map);
 
   draw();
 
-  if (bgmStarted) {
-  sounds.bgm.currentTime = 0;
-  sounds.bgm.play().catch(() => {});
+  // if (bgmStarted) {
+  //   sounds.bgm.currentTime = 0;
+  //   sounds.bgm.play().catch(() => {});
+  // }
 }
+
+function initGame() {
+  startStage(DEBUG_START_STAGE);
+}
+
+function restartStage() {
+  startStage(currentStageIndex);
 }
 
 function draw() {
@@ -115,60 +332,125 @@ function draw() {
   container.style.gridTemplateColumns =
     `repeat(${map[0].length}, 42px)`;
 
-  map.forEach(row => {
-    row.forEach(cell => {
+  map.forEach((row, y) => {
+    row.forEach((cell, x) => {
       const div = document.createElement("div");
 
       div.classList.add("tile");
 
       if (cell === WALL) div.classList.add("wall");
-      if (cell === PLAYER) div.classList.add("player");
-      if (cell === BOX) div.classList.add("box");
+      if (cell === TREE) div.classList.add("tree");
+      if (cell === MOUNTAIN) div.classList.add("mountain");
+      if (cell === SOIL) div.classList.add("soil");
+      if (cell === WATER) div.classList.add("water");
+
+      const isPlayerTile =
+        playerPos &&
+        x === playerPos.x &&
+        y === playerPos.y;
+
+      if (isPlayerTile) {
+        div.classList.add("player");
+      }
+
+      if (isPlayerTile && playerStartHintActive) {
+        div.classList.add("player-start-hint");
+      }
+      if (cell === currentPlayerChar && playerStartHintActive) {
+        div.classList.add("player-start-hint");
+      }
+      if (cell === DOOR) div.classList.add("door");
+
       if (cell === KEY) div.classList.add("key");
       if (cell === SLOT) div.classList.add("slot");
       if (cell === PLUS) div.classList.add("plus");
 
-      div.textContent = cell;
+      if (cell === KANE) div.classList.add("kanji-part");
+      if (cell === KEN) div.classList.add("kanji-part");
+      if (cell === TAKAI) div.classList.add("kanji-part");
+      if (cell === BRIDGE) div.classList.add("kanji-part");
+      if (cell === PUSH_TREE) div.classList.add("kanji-part");
 
+      if (cell === SHI) div.classList.add("kanji-part");
+      if (cell === JOU) div.classList.add("kanji-part");
+      if (cell === URI) div.classList.add("kanji-part");
+
+      if (cell === TATSU) div.classList.add("kanji-part");
+      if (cell === MOKU_PART) div.classList.add("kanji-part");
+      if (cell === SHIN_LEFT) div.classList.add("kanji-part");
+      if (cell === KIN) div.classList.add("kanji-part");
+      if (cell === SHIN) div.classList.add("kanji-part");
+
+      if (cell === MON_PART) div.classList.add("kanji-part");
+      if (cell === MIMI) div.classList.add("kanji-part");
+      if (cell === KIKU) div.classList.add("kanji-part");
+
+      if (cell === DOKU) div.classList.add("kanji-part");
+
+      let displayText = cell;
+
+      if (cell === PUSH_TREE) {
+        displayText = TREE;
+      }
+
+      if (cell === MON_PART) {
+        displayText = "門";
+      }
+
+      if (cell === MOKU_PART) {
+        displayText = "木";
+      }
+
+      div.textContent = displayText;
       container.appendChild(div);
     });
   });
 }
 
 function move(dx, dy) {
-
   startBgm();
+
+  if (playerStartHintActive) {
+    playerStartHintActive = false;
+  }
 
   const nx = playerPos.x + dx;
   const ny = playerPos.y + dy;
 
+  if (!isInsideMap(nx, ny)) {
+    return;
+  }
+
   const target = map[ny][nx];
 
-  if (target === WALL) return;
-
-  // 箱
-  if (target === BOX) {
-    playSound("box");
-    
-    if (!slotsActive) {
-      slotsActive = true;
-
-      map[1][2] = SLOT;
-      map[1][6] = SLOT;
-
-      setMessage("「六」と「五」を運んでください");
-
-      draw();
-    }
-
+  if (
+    target === WALL ||
+    target === TREE ||
+    target === MOUNTAIN ||
+    target === SOIL ||
+    target === WATER
+  ) {
     return;
   }
 
   // 押せるもの
-  if ([SIX, FIVE, PLUS, KEY].includes(target)) {
+  if ([
+      SIX, FIVE,
+      KEY,
+      KANE, KEN, TAKAI, BRIDGE, PUSH_TREE,
+
+      SHI, JOU, URI,
+      TATSU, MOKU_PART, SHIN_LEFT, KIN, SHIN,
+      MON_PART, MIMI, KIKU,
+      DOKU
+    ].includes(target)) {
 
     const nnx = nx + dx;
     const nny = ny + dy;
+
+    if (!isInsideMap(nnx, nny)) {
+      return;
+    }
 
     const nextTarget = map[nny][nnx];
 
@@ -182,7 +464,7 @@ function move(dx, dy) {
     // 鍵を扉へ
     if (target === KEY && nextTarget === DOOR) {
 
-      clearGame();
+      clearStage();
       return;
     }
 
@@ -194,7 +476,8 @@ function move(dx, dy) {
       map[nny][nnx] = target;
       map[ny][nx] = EMPTY;
 
-      checkAnswer();
+      checkCombineRules();
+      checkKeywordRule();
 
     } else {
 
@@ -215,50 +498,78 @@ function move(dx, dy) {
 
   map[playerPos.y][playerPos.x] = EMPTY;
 
-  map[ny][nx] = PLAYER;
+  map[ny][nx] = currentPlayerChar;
 
   playerPos.x = nx;
   playerPos.y = ny;
 
+  checkSplitRule();
+  checkFinalKeywordRule();
+
   draw();
 }
 
-function checkAnswer() {
+function checkCombineRules() {
+  const stage = stages[currentStageIndex];
 
-  if (
-    map[1][2] === SIX &&
-    map[1][6] === FIVE
-  ) {
+  if (!stage.combineRules) return;
 
-    for (let y = 0; y < map.length; y++) {
+  let combined = false;
+  let loopCount = 0;
 
-      for (let x = 0; x < map[y].length; x++) {
-
-        if (map[y][x] === BOX) {
-
-          map[y][x] = KEY;
-
-        }
-
-      }
-
-    }
-
-    setMessage("「鍵」が現れた");
-    playSound("correct");
-
-  }
-
-  // 間違い
-  else if (
-    map[1][2] !== SLOT &&
-    map[1][6] !== SLOT
-  ) {
-
-    gameOver();
-  }
+  do {
+    combined = applyOneCombineRule(stage);
+    loopCount++;
+  } while (combined && loopCount < 20);
 
   draw();
+}
+
+function applyOneCombineRule(stage) {
+  for (const rule of stage.combineRules) {
+    const direction = rule.direction || "horizontal";
+
+    const dx = direction === "horizontal" ? 1 : 0;
+    const dy = direction === "vertical" ? 1 : 0;
+
+    for (let y = 0; y < map.length; y++) {
+      for (let x = 0; x < map[y].length; x++) {
+        const x1 = x;
+        const y1 = y;
+
+        const x2 = x + dx;
+        const y2 = y + dy;
+
+        const x3 = x + dx * 2;
+        const y3 = y + dy * 2;
+
+        if (
+          !isInsideMap(x1, y1) ||
+          !isInsideMap(x2, y2) ||
+          !isInsideMap(x3, y3)
+        ) {
+          continue;
+        }
+
+        if (
+          map[y1][x1] === rule.left &&
+          map[y2][x2] === rule.connector &&
+          map[y3][x3] === rule.right
+        ) {
+          map[y1][x1] = EMPTY;
+          map[y2][x2] = EMPTY;
+          map[y3][x3] = rule.result;
+
+          setMessage(rule.message);
+          playSound("correct");
+
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
 }
 
 function gameOver() {
@@ -270,11 +581,31 @@ function gameOver() {
 
   setTimeout(() => {
 
-    initGame();
+    restartStage();
 
     document.getElementById("message").style.color = "white";
 
   }, 1500);
+}
+
+function clearStage() {
+  const stage = stages[currentStageIndex];
+
+  playSound("clear");
+
+  setMessage(stage.clearMessage || "ステージクリア！");
+
+  const nextStageIndex = currentStageIndex + 1;
+
+  if (nextStageIndex < stages.length) {
+    setTimeout(() => {
+      startStage(nextStageIndex);
+    }, 1000);
+  } else {
+    setTimeout(() => {
+      clearGame();
+    }, 1000);
+  }
 }
 
 function clearGame() {
@@ -299,6 +630,186 @@ function setMessage(text) {
   }
 
   message.textContent = text;
+}
+
+function checkKeywordRule() {
+  const stage = stages[currentStageIndex];
+
+  if (!stage.keywordRule) return;
+
+  const rule = stage.keywordRule;
+
+  if (rule.done) return;
+
+  const found = findWordHorizontal(rule.word);
+
+  if (!found) return;
+
+  rule.done = true;
+
+  setMessage(rule.message || "鍵が見つかった。");
+  playSound("correct");
+
+  showKeywordEffect(() => {
+    const spawnX = rule.spawn.x;
+    const spawnY = rule.spawn.y;
+
+    if (map[spawnY][spawnX] === EMPTY || map[spawnY][spawnX] === SLOT) {
+      map[spawnY][spawnX] = rule.result;
+    }
+
+    draw();
+  });
+}
+
+function checkSplitRule() {
+  const stage = stages[currentStageIndex];
+
+  if (!stage.splitRule) return;
+
+  const rule = stage.splitRule;
+
+  if (rule.done) return;
+
+  const top = rule.topSlot;
+  const bottom = rule.bottomSlot;
+  const connector = rule.connector;
+
+  const playerIsOnTopSlot =
+    playerPos.x === top.x &&
+    playerPos.y === top.y &&
+    currentPlayerChar === rule.source;
+
+  if (!playerIsOnTopSlot) return;
+
+  if (map[connector.y][connector.x] !== DIVIDE) return;
+  if (map[bottom.y][bottom.x] !== SLOT) return;
+
+  rule.done = true;
+
+  currentPlayerChar = rule.resultPlayer;
+
+  map[playerPos.y][playerPos.x] = currentPlayerChar;
+
+  setMessage(rule.message || "吾は五になった。");
+  playSound("correct");
+}
+
+function checkFinalKeywordRule() {
+  const stage = stages[currentStageIndex];
+
+  if (!stage.finalKeywordRule) return;
+
+  const rule = stage.finalKeywordRule;
+
+  if (rule.done) return;
+
+  const sixPos = findCell(rule.left);
+  if (!sixPos) return;
+
+  const neighbors = [
+    { x: sixPos.x + 1, y: sixPos.y },
+    { x: sixPos.x - 1, y: sixPos.y },
+    { x: sixPos.x, y: sixPos.y + 1 },
+    { x: sixPos.x, y: sixPos.y - 1 },
+  ];
+
+  const fiveIsNextToSix = neighbors.some(pos => {
+    if (!isInsideMap(pos.x, pos.y)) return false;
+    return map[pos.y][pos.x] === rule.right;
+  });
+
+  if (!fiveIsNextToSix) return;
+
+  rule.done = true;
+
+  setMessage(rule.message || "六五");
+  playSound("correct");
+
+  // いったん仮でエンディングへ進める
+  setTimeout(() => {
+    showFinalClearText();
+  }, 800);
+}
+
+function showFinalClearText() {
+  const clearText = document.getElementById("clear-text");
+
+  if (clearText) {
+    clearText.innerHTML = "65周年、そしてその先へ。<br><br>皆様に心から感謝申し上げます。";
+  }
+
+  const overlay = document.getElementById("overlay");
+  if (overlay) {
+    overlay.style.display = "flex";
+  }
+
+  sounds.bgm.pause();
+  playSound("clear");
+}
+
+function findWordHorizontal(word) {
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x <= map[y].length - word.length; x++) {
+      let matched = true;
+
+      for (let i = 0; i < word.length; i++) {
+        if (map[y][x + i] !== word[i]) {
+          matched = false;
+          break;
+        }
+      }
+
+      if (matched) {
+        return { x, y };
+      }
+    }
+  }
+
+  return null;
+}
+
+function findCell(char) {
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map[y].length; x++) {
+      if (map[y][x] === char) {
+        return { x, y };
+      }
+    }
+  }
+
+  return null;
+}
+
+function showKeywordEffect(onComplete) {
+  const effect = document.getElementById("keyword-effect");
+
+  if (!effect) {
+    if (onComplete) onComplete();
+    return;
+  }
+
+  effect.textContent = "読売新聞";
+
+  effect.classList.remove("active");
+  effect.style.display = "flex";
+
+  void effect.offsetWidth;
+
+  effect.classList.add("active");
+
+  setTimeout(() => {
+    effect.textContent = "鍵";
+
+    void effect.offsetWidth;
+
+    setTimeout(() => {
+      effect.classList.remove("active");
+      effect.style.display = "none";
+
+      if (onComplete) onComplete();
+    }, 800);
+  }, 900);
 }
 
 window.addEventListener("load", () => {

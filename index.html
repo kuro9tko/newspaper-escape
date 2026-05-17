@@ -12,7 +12,7 @@
 <body>
 
   <div id="message">
-    「箱」に触れてください
+    
   </div>
 
   <div id="game-container"></div>
@@ -24,7 +24,7 @@
     <div class="middle">
       <button class="move" onclick="move(-1,0)">←</button>
 
-      <button id="restart" onclick="initGame()">
+      <button id="restart" onclick="restartStage()">
         RESTART
       </button>
 
@@ -37,14 +37,15 @@
 
   <div id="overlay">
     <div id="clear-text">
-      次の65年へ。<br><br>
-      65周年ありがとうございます。
+      65周年、そしてその先へ。<br><br>
+      皆様に心から感謝申し上げます。
     </div>
   </div>
 
+  <div id="keyword-effect"></div>
   <div id="door-effect">
-    <div id="door-left">扉</div>
-    <div id="door-right">扉</div>
+    <div id="door-left">門</div>
+    <div id="door-right">門</div>
   </div>
 
   <script src="app.js"></script>

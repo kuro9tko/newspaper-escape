@@ -22,10 +22,14 @@ body {
   margin-top: 20px;
 
   display: grid;
-  gap: 2px;
+  gap: 0;
 
   border: 2px solid white;
   padding: 6px;
+}
+
+.door {
+  color: white;
 }
 
 .tile {
@@ -41,20 +45,51 @@ body {
 }
 
 .wall {
-  color: #666;
+  color: #777;
+  font-weight: bold;
+}
+
+.tree,
+.mountain,
+.soil,
+.water {
+  color: #333;
+}
+
+.mountain {
+  color: #444;
+}
+
+.soil {
+  color: #555;
+}
+
+.water {
+  color: #336;
+}
+
+.door {
+  color: #aaa;
+  border: none;
 }
 
 .player {
   color: white;
 }
 
-.box,
-.key {
-  border: 1px solid white;
+.slot {
+  color: #555;
+  border: none;
 }
 
-.slot {
-  border: 1px dashed white;
+.kanji-part {
+  color: white;
+  border: none;
+}
+
+.key {
+  color: white;
+  border: none;
 }
 
 .plus {
@@ -122,48 +157,7 @@ button:active {
   }
 }
 
-/*アニメーション*/
-#door-effect {
-  position: fixed;
-  inset: 0;
-  background: black;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
 
-#door-left,
-#door-right {
-  position: absolute;
-  font-size: 48px;
-  color: white;
-  animation: doorOpen 2.5s forwards;
-}
-
-#door-left {
-  clip-path: inset(0 50% 0 0);
-}
-
-#door-right {
-  clip-path: inset(0 0 0 50%);
-}
-
-@keyframes doorOpen {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  50% {
-    transform: scale(4);
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
 
 /* 扉演出：初期状態では必ず非表示 */
 #door-effect {
@@ -251,4 +245,137 @@ button:active {
 /* エンディング画面 */
 #overlay {
   z-index: 30;
+}
+
+/* 動かない地形・固定文字 */
+.wall,
+.tree,
+.mountain,
+.soil,
+.water,
+.plus,
+.slot {
+  color: #555;
+}
+
+/* 動かせる文字 */
+.player,
+.key,
+.kanji-part {
+  color: white;
+}
+
+/* 門は動かないが、ゴールなので少し明るめ */
+.door {
+  color: #aaa;
+  border: none;
+}
+
+/* ===== 文字表示ルール ===== */
+
+/* 枠線は使わない */
+.key,
+.kanji-part,
+.door,
+.slot {
+  border: none;
+}
+
+/* 動かない文字 */
+.wall,
+.tree,
+.mountain,
+.soil,
+.water,
+.plus,
+.slot {
+  color: #555;
+}
+
+/* 動かせる文字 */
+.player,
+.key,
+.kanji-part {
+  color: white;
+}
+
+/* 門はゴールなので中間色 */
+.door {
+  color: #aaa;
+}
+
+/* スロットは文字として表示 */
+.slot {
+  color: #555;
+}
+
+#keyword-effect {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+
+  font-size: 48px;
+  font-weight: bold;
+
+  z-index: 25;
+}
+
+#keyword-effect.active {
+  display: flex;
+  animation: keywordPop 1.2s ease-in-out forwards;
+}
+
+@keyframes keywordPop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+
+  35% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+
+  70% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.player-start-hint {
+  animation: playerStartHint 0.22s ease-in-out infinite;
+}
+
+@keyframes playerStartHint {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-2px, 0);
+  }
+
+  50% {
+    transform: translate(2px, 0);
+  }
+
+  75% {
+    transform: translate(-2px, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
