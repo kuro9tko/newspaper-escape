@@ -19,19 +19,19 @@
 
   <div id="controls">
 
-    <button class="move" onclick="move(0,-1)">↑</button>
+    <button class="move" data-dx="0" data-dy="-1">↑</button>
 
     <div class="middle">
-      <button class="move" onclick="move(-1,0)">←</button>
+      <button class="move" data-dx="-1" data-dy="0">←</button>
 
       <button id="restart" onclick="restartStage()">
         RESTART
       </button>
 
-      <button class="move" onclick="move(1,0)">→</button>
+      <button class="move" data-dx="1" data-dy="0">→</button>
     </div>
 
-    <button class="move" onclick="move(0,1)">↓</button>
+    <button class="move" data-dx="0" data-dy="1">↓</button>
 
   </div>
 

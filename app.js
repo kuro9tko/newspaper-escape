@@ -812,6 +812,17 @@ function showKeywordEffect(onComplete) {
   }, 900);
 }
 
+document.querySelectorAll(".move").forEach(button => {
+  button.addEventListener("pointerdown", event => {
+    event.preventDefault();
+
+    const dx = Number(button.dataset.dx);
+    const dy = Number(button.dataset.dy);
+
+    move(dx, dy);
+  });
+});
+
 window.addEventListener("load", () => {
   initGame();
 });
