@@ -121,3 +121,134 @@ button:active {
     opacity: 0.7;
   }
 }
+
+/*アニメーション*/
+#door-effect {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+#door-left,
+#door-right {
+  position: absolute;
+  font-size: 48px;
+  color: white;
+  animation: doorOpen 2.5s forwards;
+}
+
+#door-left {
+  clip-path: inset(0 50% 0 0);
+}
+
+#door-right {
+  clip-path: inset(0 0 0 50%);
+}
+
+@keyframes doorOpen {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(4);
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 扉演出：初期状態では必ず非表示 */
+#door-effect {
+  position: fixed;
+  inset: 0;
+
+  background: black;
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 20;
+}
+
+/* 扉の左右パーツ */
+#door-left,
+#door-right {
+  position: absolute;
+
+  font-size: 64px;
+  color: white;
+  font-weight: bold;
+
+  line-height: 1;
+
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* 左半分 */
+#door-left {
+  clip-path: inset(0 50% 0 0);
+}
+
+/* 右半分 */
+#door-right {
+  clip-path: inset(0 0 0 50%);
+}
+
+/* 扉演出開始時 */
+#door-effect.active #door-left {
+  animation: doorLeftOpen 2.5s forwards;
+}
+
+#door-effect.active #door-right {
+  animation: doorRightOpen 2.5s forwards;
+}
+
+@keyframes doorLeftOpen {
+  0% {
+    transform: scale(1) translateX(0);
+    opacity: 1;
+  }
+
+  45% {
+    transform: scale(4) translateX(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(4) translateX(-80px);
+    opacity: 0;
+  }
+}
+
+@keyframes doorRightOpen {
+  0% {
+    transform: scale(1) translateX(0);
+    opacity: 1;
+  }
+
+  45% {
+    transform: scale(4) translateX(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(4) translateX(80px);
+    opacity: 0;
+  }
+}
+
+/* エンディング画面 */
+#overlay {
+  z-index: 30;
+}

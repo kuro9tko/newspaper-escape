@@ -26,35 +26,97 @@ let playerPos;
 
 let slotsActive = false;
 
-function initGame() {
+let bgmStarted = false;
 
+const sounds = {
+  bgm: new Audio("audio/bgm.mp3"),
+  move: new Audio("audio/move.mp3"),
+  box: new Audio("audio/box.mp3"),
+  correct: new Audio("audio/correct.mp3"),
+  gameover: new Audio("audio/gameover.mp3"),
+  clear: new Audio("audio/clear.mp3")
+};
+
+sounds.bgm.loop = true;
+sounds.bgm.volume = 0.35;
+
+sounds.move.volume = 0.4;
+sounds.box.volume = 0.6;
+sounds.correct.volume = 0.7;
+sounds.gameover.volume = 0.8;
+sounds.clear.volume = 0.8;
+
+function startBgm() {
+  if (bgmStarted) return;
+
+  bgmStarted = true;
+  sounds.bgm.currentTime = 0;
+  sounds.bgm.play().catch(() => {});
+}
+
+function playSound(name) {
+  const sound = sounds[name];
+  if (!sound) return;
+
+  sound.currentTime = 0;
+  sound.play().catch(() => {});
+}
+
+function initGame() {
   map = JSON.parse(JSON.stringify(initialMap));
 
   playerPos = { x: 1, y: 6 };
 
-  slotsActive = false; // 追加：リスタート時に欄の出現状態をリセット
+  slotsActive = false;
 
-  document.getElementById("overlay").style.display = "none";
-  document.getElementById("message").style.color = "white"; // ついでに色も戻す
+  const overlay = document.getElementById("overlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+
+  const doorEffect = document.getElementById("door-effect");
+  if (doorEffect) {
+    doorEffect.style.display = "none";
+    doorEffect.classList.remove("active");
+  }
+
+  const message = document.getElementById("message");
+  message.style.color = "white";
 
   setMessage("「箱」に触れてください");
 
+  console.log("initGame 実行");
+  console.log(map);
+
   draw();
+
+  if (bgmStarted) {
+  sounds.bgm.currentTime = 0;
+  sounds.bgm.play().catch(() => {});
+}
 }
 
 function draw() {
-
   const container = document.getElementById("game-container");
+
+  if (!container) {
+    console.error("game-container が見つかりません");
+    return;
+  }
+
+  if (!map) {
+    console.error("map が初期化されていません");
+    return;
+  }
 
   container.innerHTML = "";
 
+  container.style.display = "grid";
   container.style.gridTemplateColumns =
     `repeat(${map[0].length}, 42px)`;
 
   map.forEach(row => {
-
     row.forEach(cell => {
-
       const div = document.createElement("div");
 
       div.classList.add("tile");
@@ -69,14 +131,13 @@ function draw() {
       div.textContent = cell;
 
       container.appendChild(div);
-
     });
-
   });
-
 }
 
 function move(dx, dy) {
+
+  startBgm();
 
   const nx = playerPos.x + dx;
   const ny = playerPos.y + dy;
@@ -87,9 +148,9 @@ function move(dx, dy) {
 
   // 箱
   if (target === BOX) {
-
+    playSound("box");
+    
     if (!slotsActive) {
-
       slotsActive = true;
 
       map[1][2] = SLOT;
@@ -150,6 +211,8 @@ function move(dx, dy) {
   }
 
   // プレイヤー移動
+  playSound("move");
+
   map[playerPos.y][playerPos.x] = EMPTY;
 
   map[ny][nx] = PLAYER;
@@ -182,6 +245,7 @@ function checkAnswer() {
     }
 
     setMessage("「鍵」が現れた");
+    playSound("correct");
 
   }
 
@@ -198,6 +262,7 @@ function checkAnswer() {
 }
 
 function gameOver() {
+  playSound("gameover");
 
   setMessage("GAME OVER");
 
@@ -213,13 +278,29 @@ function gameOver() {
 }
 
 function clearGame() {
+  playSound("clear");
 
-  document.getElementById("overlay").style.display = "flex";
+  sounds.bgm.pause();
+
+  document.getElementById("door-effect").style.display = "flex";
+
+  setTimeout(() => {
+    document.getElementById("door-effect").style.display = "none";
+    document.getElementById("overlay").style.display = "flex";
+  }, 2500);
 }
 
 function setMessage(text) {
+  const message = document.getElementById("message");
 
-  document.getElementById("message").textContent = text;
+  if (!message) {
+    console.error("message が見つかりません");
+    return;
+  }
+
+  message.textContent = text;
 }
 
-initGame();
+window.addEventListener("load", () => {
+  initGame();
+});
