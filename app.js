@@ -2,6 +2,7 @@ const EMPTY = "　";
 const WALL = "壁";
 const TREE = "木";
 const PUSH_TREE = "押木";
+const GUIDE = "▶︎";
 
 const MOUNTAIN = "山";
 const SOIL = "土";
@@ -41,35 +42,35 @@ const DOKU = "読";
 
 const stages = [
   {
-    name: "吾を動かし、鍵でひらく",
-    message: "鍵でひらく？",
+    name: "「吾」がプレイヤーです。「鍵」で「門」を開きましょう",
+    message: "「吾」を動かそう。「鍵」で「門」を開こう",
     clearMessage: "門がひらいた。",
     map: [
-      [TREE,TREE,TREE,WALL,DOOR,WALL,TREE,TREE,TREE],
-      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
-      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
-      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
-      [TREE,TREE,TREE,WALL,KEY,WALL,TREE,TREE,TREE],
-      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
-      [TREE,TREE,TREE,WALL,PLAYER,WALL,TREE,TREE,TREE],
-      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
-      [TREE,TREE,TREE,WALL,EMPTY,WALL,TREE,TREE,TREE],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE],
+      [GUIDE,GUIDE,GUIDE,PLAYER,EMPTY,EMPTY,KEY,EMPTY,DOOR],
+      [GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
     ],
   },
   {
     name: "鍵と橋",
-    message: "組み合わる？",
+    message: "漢字を組み立てよう",
     clearMessage: "門がひらいた。",
     map: [
-      [MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN],
-      [MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN,MOUNTAIN],
+      [TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE],
+      [TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE],
       [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
-      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,KEN,EMPTY,EMPTY],
-      [EMPTY,EMPTY,KANE,SLOT,PLUS,SLOT,EMPTY,EMPTY,DOOR],
       [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
-      [SOIL,SOIL,SLOT,PLUS,TAKAI,BRIDGE,WATER,WATER,WATER],
-      [TREE,TREE,PUSH_TREE,EMPTY,EMPTY,EMPTY,WATER,WATER,WATER],
-      [TREE,TREE,EMPTY,EMPTY,PLAYER,EMPTY,WATER,WATER,WATER],
+      [PLAYER,EMPTY,KANE,SLOT,PLUS,KEN,EMPTY,EMPTY,DOOR],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE],
+      [TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE],
     ],
     combineRules: [
       {
@@ -180,8 +181,16 @@ let map = [];
 let playerPos;
 let currentPlayerChar = PLAYER;
 let playerStartHintActive = false;
+let combineEffectCells = [];
 
 let bgmStarted = false;
+
+let soundSettings = {
+  bgmEnabled: true,
+  seEnabled: true,
+  bgmVolume: 0.35,
+  seVolume: 0.7
+};
 
 const sounds = {
   bgm: new Audio("audio/bgm.mp3"),
@@ -204,6 +213,7 @@ sounds.gameover.volume = 0.8;
 sounds.clear.volume = 0.8;
 
 function startBgm() {
+  if (!soundSettings.bgmEnabled) return;
   if (bgmStarted) return;
 
   bgmStarted = true;
@@ -212,11 +222,57 @@ function startBgm() {
 }
 
 function playSound(name) {
+  if (!soundSettings.seEnabled) return;
+
   const sound = sounds[name];
   if (!sound) return;
 
   sound.currentTime = 0;
   sound.play().catch(() => {});
+}
+
+const SOUND_SETTINGS_KEY = "kanji_game_sound_settings";
+
+function loadSoundSettings() {
+  const raw = localStorage.getItem(SOUND_SETTINGS_KEY);
+
+  if (!raw) {
+    return;
+  }
+
+  try {
+    const saved = JSON.parse(raw);
+
+    soundSettings = {
+      ...soundSettings,
+      ...saved
+    };
+  } catch (e) {
+    console.warn("音設定の読み込みに失敗しました", e);
+  }
+}
+
+function saveSoundSettings() {
+  localStorage.setItem(
+    SOUND_SETTINGS_KEY,
+    JSON.stringify(soundSettings)
+  );
+}
+
+function applySoundSettings() {
+  sounds.bgm.volume = soundSettings.bgmEnabled
+    ? soundSettings.bgmVolume
+    : 0;
+
+  const seVolume = soundSettings.seEnabled
+    ? soundSettings.seVolume
+    : 0;
+
+  sounds.move.volume = seVolume * 0.6;
+  sounds.box.volume = seVolume * 0.8;
+  sounds.correct.volume = seVolume;
+  sounds.gameover.volume = seVolume;
+  sounds.clear.volume = seVolume;
 }
 
 function cloneMap(sourceMap) {
@@ -338,8 +394,17 @@ function draw() {
 
       div.classList.add("tile");
 
+      const isCombining = combineEffectCells.some(pos => {
+        return pos.x === x && pos.y === y;
+      });
+
+      if (isCombining) {
+        div.classList.add("combine-effect");
+      }
+
       if (cell === WALL) div.classList.add("wall");
       if (cell === TREE) div.classList.add("tree");
+      if (cell === GUIDE) div.classList.add("guide");
       if (cell === MOUNTAIN) div.classList.add("mountain");
       if (cell === SOIL) div.classList.add("soil");
       if (cell === WATER) div.classList.add("water");
@@ -407,6 +472,25 @@ function draw() {
   });
 }
 
+function getTilePixelPosition(x, y) {
+  const container = document.getElementById("game-container");
+  const firstTile = container.querySelector(".tile");
+
+  if (!container || !firstTile) {
+    return { left: x * 42, top: y * 42 };
+  }
+
+  const tileRect = firstTile.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+
+  const tileSize = tileRect.width;
+
+  return {
+    left: x * tileSize,
+    top: y * tileSize
+  };
+}
+
 function move(dx, dy) {
   startBgm();
 
@@ -426,6 +510,7 @@ function move(dx, dy) {
   if (
     target === WALL ||
     target === TREE ||
+    target === GUIDE ||
     target === MOUNTAIN ||
     target === SOIL ||
     target === WATER
@@ -463,8 +548,12 @@ function move(dx, dy) {
 
     // 鍵を扉へ
     if (target === KEY && nextTarget === DOOR) {
+      playSound("correct");
 
-      clearStage();
+      playUnlockEffect(nx, ny, nnx, nny, () => {
+        clearStage();
+      });
+
       return;
     }
 
@@ -514,15 +603,7 @@ function checkCombineRules() {
 
   if (!stage.combineRules) return;
 
-  let combined = false;
-  let loopCount = 0;
-
-  do {
-    combined = applyOneCombineRule(stage);
-    loopCount++;
-  } while (combined && loopCount < 20);
-
-  draw();
+  applyOneCombineRule(stage);
 }
 
 function applyOneCombineRule(stage) {
@@ -556,12 +637,30 @@ function applyOneCombineRule(stage) {
           map[y2][x2] === rule.connector &&
           map[y3][x3] === rule.right
         ) {
-          map[y1][x1] = EMPTY;
-          map[y2][x2] = EMPTY;
-          map[y3][x3] = rule.result;
+          playCombineEffect(
+            [
+              { x: x1, y: y1 },
+              { x: x2, y: y2 },
+              { x: x3, y: y3 }
+            ],
+            () => {
+              map[y1][x1] = EMPTY;
+              map[y2][x2] = EMPTY;
+              map[y3][x3] = rule.result;
 
-          setMessage(rule.message);
-          playSound("correct");
+              setMessage(rule.message);
+              playSound("correct");
+
+              combineEffectCells = [];
+              draw();
+
+              // 連鎖確認
+              setTimeout(() => {
+                checkCombineRules();
+                checkKeywordRule();
+              }, 80);
+            }
+          );
 
           return true;
         }
@@ -570,6 +669,15 @@ function applyOneCombineRule(stage) {
   }
 
   return false;
+}
+
+function playCombineEffect(cells, onComplete) {
+  combineEffectCells = cells;
+  draw();
+
+  setTimeout(() => {
+    if (onComplete) onComplete();
+  }, 350);
 }
 
 function gameOver() {
@@ -586,6 +694,111 @@ function gameOver() {
     document.getElementById("message").style.color = "white";
 
   }, 1500);
+}
+
+function playUnlockEffect(keyX, keyY, doorX, doorY, onComplete) {
+  const container = document.getElementById("game-container");
+  if (!container) {
+    if (onComplete) onComplete();
+    return;
+  }
+
+  let layer = container.querySelector(".unlock-effect-layer");
+
+  if (!layer) {
+    layer = document.createElement("div");
+    layer.className = "unlock-effect-layer";
+    container.appendChild(layer);
+  }
+
+  layer.innerHTML = "";
+
+  const keyStart = getTilePixelPosition(keyX, keyY);
+  const doorPos = getTilePixelPosition(doorX, doorY);
+
+  const flyingKey = document.createElement("div");
+  flyingKey.className = "flying-key";
+  flyingKey.textContent = KEY;
+  flyingKey.style.left = `${keyStart.left}px`;
+  flyingKey.style.top = `${keyStart.top}px`;
+
+  layer.appendChild(flyingKey);
+
+  // 盤面上の鍵は一旦消す
+  map[keyY][keyX] = EMPTY;
+  draw();
+
+  // draw() で layer が消える可能性があるので再取得
+  layer = container.querySelector(".unlock-effect-layer");
+  if (!layer) {
+    layer = document.createElement("div");
+    layer.className = "unlock-effect-layer";
+    container.appendChild(layer);
+  }
+
+  layer.appendChild(flyingKey);
+
+  requestAnimationFrame(() => {
+    flyingKey.style.transform =
+      `translate(${doorPos.left - keyStart.left}px, ${doorPos.top - keyStart.top}px)`;
+  });
+
+  setTimeout(() => {
+    flyingKey.remove();
+
+    // 門を消す
+    map[doorY][doorX] = EMPTY;
+    draw();
+
+    createDoorScatterEffect(doorX, doorY);
+
+    setTimeout(() => {
+      if (onComplete) onComplete();
+    }, 650);
+  }, 600);
+}
+
+function createDoorScatterEffect(doorX, doorY) {
+  const container = document.getElementById("game-container");
+  if (!container) return;
+
+  let layer = container.querySelector(".unlock-effect-layer");
+
+  if (!layer) {
+    layer = document.createElement("div");
+    layer.className = "unlock-effect-layer";
+    container.appendChild(layer);
+  }
+
+  const doorPos = getTilePixelPosition(doorX, doorY);
+
+  const directions = [
+    { dx: -60, dy: -50, rot: "-40deg" },
+    { dx:  60, dy: -45, rot: "35deg" },
+    { dx: -55, dy:  45, rot: "50deg" },
+    { dx:  65, dy:  50, rot: "-55deg" },
+    { dx:   0, dy: -70, rot: "20deg" },
+    { dx:   0, dy:  70, rot: "-25deg" },
+  ];
+
+  directions.forEach(dir => {
+    const piece = document.createElement("div");
+    piece.className = "door-piece";
+    piece.textContent = DOOR;
+
+    piece.style.left = `${doorPos.left}px`;
+    piece.style.top = `${doorPos.top}px`;
+
+    piece.style.setProperty("--dx", `${dir.dx}px`);
+    piece.style.setProperty("--dy", `${dir.dy}px`);
+    piece.style.setProperty("--rot", dir.rot);
+
+    layer.appendChild(piece);
+
+    setTimeout(() => {
+      piece.remove();
+    }, 650);
+  });
 }
 
 function clearStage() {
@@ -823,6 +1036,82 @@ document.querySelectorAll(".move").forEach(button => {
   });
 });
 
+function setupSoundSettingsUI() {
+  const bgmToggle = document.getElementById("bgm-toggle");
+  const seToggle = document.getElementById("se-toggle");
+  const bgmVolume = document.getElementById("bgm-volume");
+  const seVolume = document.getElementById("se-volume");
+
+  if (!bgmToggle || !seToggle || !bgmVolume || !seVolume) {
+    return;
+  }
+
+  bgmToggle.checked = soundSettings.bgmEnabled;
+  seToggle.checked = soundSettings.seEnabled;
+  bgmVolume.value = soundSettings.bgmVolume;
+  seVolume.value = soundSettings.seVolume;
+
+  bgmToggle.addEventListener("change", () => {
+    soundSettings.bgmEnabled = bgmToggle.checked;
+
+    if (!soundSettings.bgmEnabled) {
+      sounds.bgm.pause();
+    } else if (bgmStarted) {
+      sounds.bgm.play().catch(() => {});
+    }
+
+    applySoundSettings();
+    saveSoundSettings();
+  });
+
+  seToggle.addEventListener("change", () => {
+    soundSettings.seEnabled = seToggle.checked;
+
+    applySoundSettings();
+    saveSoundSettings();
+  });
+
+  bgmVolume.addEventListener("input", () => {
+    soundSettings.bgmVolume = Number(bgmVolume.value);
+
+    applySoundSettings();
+    saveSoundSettings();
+  });
+
+  seVolume.addEventListener("input", () => {
+    soundSettings.seVolume = Number(seVolume.value);
+
+    applySoundSettings();
+    saveSoundSettings();
+  });
+}
+
+function restartBgmFromBeginning() {
+  if (!bgmStarted) return;
+
+  sounds.bgm.pause();
+  sounds.bgm.currentTime = 0;
+
+  if (soundSettings.bgmEnabled) {
+    sounds.bgm.play().catch(() => {});
+  }
+}
+
 window.addEventListener("load", () => {
-  initGame();
+  const startButton = document.getElementById("start-button");
+
+  if (startButton) {
+    startButton.addEventListener("pointerdown", event => {
+      event.preventDefault();
+
+      document.body.classList.remove("game-not-started");
+
+      const startScreen = document.getElementById("start-screen");
+      if (startScreen) {
+        startScreen.style.display = "none";
+      }
+
+      initGame();
+    });
+  }
 });

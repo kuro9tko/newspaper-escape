@@ -9,7 +9,40 @@
 
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="game-not-started">
+  <div id="start-screen">
+    <div id="start-title">読売新聞北陸発刊65周年記念</div>
+
+    <div id="start-subtitle">
+      活字を動かし、ことばをつなぐ。
+    </div>
+
+    <div id="sound-settings">
+      <label class="sound-row">
+        <span>BGM</span>
+        <input id="bgm-toggle" type="checkbox" checked>
+      </label>
+
+      <label class="sound-row">
+        <span>BGM音量</span>
+        <input id="bgm-volume" type="range" min="0" max="1" step="0.05" value="0.35">
+      </label>
+
+      <label class="sound-row">
+        <span>SE</span>
+        <input id="se-toggle" type="checkbox" checked>
+      </label>
+
+      <label class="sound-row">
+        <span>SE音量</span>
+        <input id="se-volume" type="range" min="0" max="1" step="0.05" value="0.7">
+      </label>
+    </div>
+
+    <button id="start-button">
+      START
+    </button>
+  </div>
 
   <div id="message">
     
