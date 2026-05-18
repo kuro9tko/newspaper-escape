@@ -284,7 +284,6 @@ button:active {
 .mountain,
 .soil,
 .water,
-.plus,
 .slot {
   color: #555;
 }
@@ -332,7 +331,7 @@ button:active {
 
 /* 門はゴールなので中間色 */
 .door {
-  color: #aaa;
+  color: white;
 }
 
 /* スロットは文字として表示 */
@@ -560,4 +559,269 @@ body.game-not-started #controls {
 
 .sound-row input[type="range"] {
   width: 100%;
+}
+
+.plus,
+.divide,
+.slot {
+  color: white;
+  border: none;
+}
+
+#stage-label {
+  margin-top: 8px;
+  color: #777;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+#ending65-effect {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  background: black;
+  color: white;
+
+  z-index: 40;
+}
+
+#ending65-effect.active {
+  display: flex;
+}
+
+#ending65-kanji,
+#ending65-number {
+  position: absolute;
+  font-weight: bold;
+  letter-spacing: 4px;
+}
+
+#ending65-kanji {
+  font-size: 64px;
+  opacity: 1;
+}
+
+#ending65-number {
+  font-size: 88px;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+#ending65-effect.active #ending65-kanji {
+  animation: kanji65Fade 1.4s ease-in-out forwards;
+}
+
+#ending65-effect.active #ending65-number {
+  animation: number65Appear 1.8s ease-in-out forwards;
+}
+
+@keyframes kanji65Fade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  60% {
+    opacity: 0.35;
+    transform: scale(1.1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes number65Appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  45% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  75% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+#start-help {
+  margin-top: -20px;
+  margin-bottom: 32px;
+  color: #777;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+#restart {
+  margin-top: 10px;
+  width: 120px;
+  height: 48px;
+  font-size: 14px;
+}
+
+/* ===== Sound settings monochrome ===== */
+
+#sound-settings input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 24px;
+  height: 24px;
+
+  border: 1px solid white;
+  background: black;
+  position: relative;
+}
+
+#sound-settings input[type="checkbox"]:checked::after {
+  content: "";
+
+  position: absolute;
+  left: 6px;
+  top: 2px;
+
+  width: 8px;
+  height: 14px;
+
+  border: solid white;
+  border-width: 0 3px 3px 0;
+
+  transform: rotate(45deg);
+}
+
+#sound-settings input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+
+  height: 4px;
+  background: #444;
+  border-radius: 999px;
+  outline: none;
+}
+
+#sound-settings input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 18px;
+  height: 18px;
+
+  background: white;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+#sound-settings input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+
+  background: white;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+#sound-settings input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: #444;
+  border-radius: 999px;
+}
+
+/* ===== Sound popup ===== */
+
+#sound-button {
+  width: 48px;
+  height: 48px;
+
+  margin-bottom: 24px;
+
+  border: 1px solid white;
+  border-radius: 999px;
+
+  background: black;
+  color: white;
+
+  font-size: 22px;
+  line-height: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#sound-popup {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: min(320px, calc(100vw - 48px));
+
+  padding: 24px;
+
+  background: black;
+  color: white;
+
+  border: 1px solid white;
+
+  z-index: 120;
+}
+
+#sound-popup.hidden {
+  display: none;
+}
+
+#sound-popup-title {
+  margin-bottom: 18px;
+
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+#sound-popup #sound-settings {
+  width: 100%;
+  margin-bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  font-size: 14px;
+  color: #ccc;
+}
+
+#sound-popup .sound-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+#sound-backdrop {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.65);
+
+  z-index: 110;
+}
+
+#sound-backdrop.hidden {
+  display: none;
 }

@@ -16,27 +16,40 @@
     <div id="start-subtitle">
       活字を動かし、ことばをつなぐ。
     </div>
+    <!-- <div id="start-help">
+      矢印で移動 / 文字を押す
+    </div> -->
 
-    <div id="sound-settings">
-      <label class="sound-row">
-        <span>BGM</span>
-        <input id="bgm-toggle" type="checkbox" checked>
-      </label>
+    <button id="sound-button" type="button" aria-label="音設定">
+      ♪
+    </button>
 
-      <label class="sound-row">
-        <span>BGM音量</span>
-        <input id="bgm-volume" type="range" min="0" max="1" step="0.05" value="0.35">
-      </label>
+    <div id="sound-backdrop" class="hidden"></div>
 
-      <label class="sound-row">
-        <span>SE</span>
-        <input id="se-toggle" type="checkbox" checked>
-      </label>
+    <div id="sound-popup" class="hidden">
+      <div id="sound-popup-title">音設定</div>
 
-      <label class="sound-row">
-        <span>SE音量</span>
-        <input id="se-volume" type="range" min="0" max="1" step="0.05" value="0.7">
-      </label>
+      <div id="sound-settings">
+        <label class="sound-row">
+          <span>BGM</span>
+          <input id="bgm-toggle" type="checkbox" checked>
+        </label>
+
+        <label class="sound-row">
+          <span>BGM音量</span>
+          <input id="bgm-volume" type="range" min="0" max="1" step="0.05" value="0.35">
+        </label>
+
+        <label class="sound-row">
+          <span>SE</span>
+          <input id="se-toggle" type="checkbox" checked>
+        </label>
+
+        <label class="sound-row">
+          <span>SE音量</span>
+          <input id="se-volume" type="range" min="0" max="1" step="0.05" value="0.7">
+        </label>
+      </div>
     </div>
 
     <button id="start-button">
@@ -44,28 +57,24 @@
     </button>
   </div>
 
-  <div id="message">
-    
-  </div>
+  <div id="message"></div>
+  <div id="stage-label"></div>
 
   <div id="game-container"></div>
 
   <div id="controls">
-
     <button class="move" data-dx="0" data-dy="-1">↑</button>
 
     <div class="middle">
       <button class="move" data-dx="-1" data-dy="0">←</button>
-
-      <button id="restart" onclick="restartStage()">
-        RESTART
-      </button>
-
       <button class="move" data-dx="1" data-dy="0">→</button>
     </div>
 
     <button class="move" data-dx="0" data-dy="1">↓</button>
 
+    <button id="restart">
+      RESTART
+    </button>
   </div>
 
   <div id="overlay">
@@ -76,6 +85,10 @@
   </div>
 
   <div id="keyword-effect"></div>
+  <div id="ending65-effect">
+    <div id="ending65-kanji">六五</div>
+    <div id="ending65-number">65</div>
+  </div>
   <div id="door-effect">
     <div id="door-left">門</div>
     <div id="door-right">門</div>
