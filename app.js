@@ -373,7 +373,7 @@ function draw() {
 
   container.style.display = "grid";
   container.style.gridTemplateColumns =
-    `repeat(${map[0].length}, 42px)`;
+  `repeat(${map[0].length}, var(--tile-size, 42px))`;
 
   map.forEach((row, y) => {
     row.forEach((cell, x) => {
@@ -505,6 +505,10 @@ function move(dx, dy) {
   }
 
   const target = map[ny][nx];
+
+  if (target === MOUTH && currentPlayerChar !== MOUTH) {
+    return;
+  }
 
   if (
     target === WALL ||

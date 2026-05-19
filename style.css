@@ -15,7 +15,9 @@ body {
   flex-direction: column;
   align-items: center;
 
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
 }
 
 html,
@@ -816,3 +818,57 @@ body.game-not-started #controls {
   display: none;
 }
 
+@media (max-height: 740px) {
+  #message {
+    margin-top: 10px;
+    min-height: 24px;
+    font-size: 16px;
+  }
+
+  #stage-label {
+    margin-top: 4px;
+  }
+
+  #game-container {
+    margin-top: 10px;
+  }
+
+  .tile {
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+  }
+
+  #controls {
+    margin-top: 14px;
+    gap: 8px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  }
+
+  button {
+    width: 78px;
+    height: 56px;
+    font-size: 22px;
+  }
+
+  #restart {
+    width: 110px;
+    height: 44px;
+    font-size: 13px;
+  }
+}
+
+:root {
+  --tile-size: 42px;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+}
+
+@media (max-height: 740px) {
+  :root {
+    --tile-size: 38px;
+  }
+}
