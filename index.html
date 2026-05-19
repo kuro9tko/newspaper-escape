@@ -63,18 +63,22 @@
   <div id="game-container"></div>
 
   <div id="controls">
-    <button class="move" data-dx="0" data-dy="-1">↑</button>
 
-    <div class="middle">
-      <button class="move" data-dx="-1" data-dy="0">←</button>
-      <button class="move" data-dx="1" data-dy="0">→</button>
+  <div id="control-pad">
+      <button class="move up" data-dx="0" data-dy="-1">↑</button>
+
+      <div class="middle">
+        <button class="move left" data-dx="-1" data-dy="0">←</button>
+        <button class="move right" data-dx="1" data-dy="0">→</button>
+      </div>
+
+      <button class="move down" data-dx="0" data-dy="1">↓</button>
     </div>
 
-    <button class="move" data-dx="0" data-dy="1">↓</button>
-
-    <button id="restart">
-      RESTART
+    <button id="restart" aria-label="リスタート">
+      ↺
     </button>
+
   </div>
 
   <div id="overlay">
@@ -86,7 +90,7 @@
 
   <div id="keyword-effect"></div>
   <div id="ending65-effect">
-    <div id="ending65-kanji">六五</div>
+    <!-- <div id="ending65-kanji">六五</div> -->
     <div id="ending65-number">65</div>
   </div>
   <div id="door-effect">

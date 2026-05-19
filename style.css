@@ -116,22 +116,36 @@ button {
 }
 
 #controls {
-  margin-top: 24px;
+  margin-top: 14px;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
 
-  gap: 12px;
+  gap: 18px;
 
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
 }
 
+#control-pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
 .middle {
   display: flex;
-  gap: 14px;
+  gap: 64px;
+}
+
+button.move {
+  width: 72px;
+  height: 50px;
+  font-size: 22px;
 }
 
 button {
@@ -156,10 +170,15 @@ button:active {
 }
 
 #restart {
-  width: 120px;
-  height: 64px;
-  font-size: 16px;
+  width: 72px;
+  height: 34px;
+
+  margin-top: 0;
+
+  font-size: 10px;
+  letter-spacing: 0.5px;
 }
+
 #overlay {
   position: fixed;
 
@@ -871,4 +890,67 @@ body.game-not-started #controls {
   :root {
     --tile-size: 38px;
   }
+}
+
+@media (max-height: 720px) {
+  #controls {
+    width: calc(var(--tile-size, 36px) * 9 + 8px);
+    margin-top: 10px;
+  }
+
+  #control-pad {
+    gap: 6px;
+  }
+
+  .middle {
+    gap: 52px;
+  }
+
+  #restart {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
+
+#controls {
+  position: relative;
+
+  width: calc(var(--tile-size, 42px) * 9 + 12px);
+  margin-top: 14px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#control-pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.middle {
+  display: flex;
+  gap: 64px;
+}
+
+#restart {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  width: 44px;
+  height: 44px;
+
+  margin: 0;
+  padding: 0;
+
+  font-size: 22px;
+  line-height: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
