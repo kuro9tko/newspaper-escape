@@ -1,7 +1,14 @@
+:root {
+  --paper-light: rgb(200, 200, 168);
+  --paper-mid: rgb(160, 160, 136);
+  --paper-dark: rgb(104, 104, 80);
+  --ink-dark: rgb(40, 40, 24);
+}
+
 body {
   margin: 0;
-  background: black;
-  color: white;
+  background: var(--paper-light);
+  color: var(--ink-dark);
   font-family: monospace;
 
   display: flex;
@@ -43,13 +50,14 @@ button {
   display: grid;
   gap: 0;
 
-  border: 2px solid white;
+  border: 2px solid var(--ink-dark);
   padding: 6px;
   position: relative;
 }
 
 .door {
-  color: white;
+  color: var(--ink-dark);
+  border: none;
 }
 
 .tile {
@@ -65,7 +73,7 @@ button {
 }
 
 .wall {
-  color: #777;
+  color: var(--paper-mid);
   font-weight: bold;
 }
 
@@ -73,47 +81,35 @@ button {
 .mountain,
 .soil,
 .water {
-  color: #333;
-}
-
-.mountain {
-  color: #444;
-}
-
-.soil {
-  color: #555;
-}
-
-.water {
-  color: #336;
+  color: var(--paper-mid);
 }
 
 .door {
-  color: white;
+  color: var(--ink-dark);
   border: none;
 }
 
 .player {
-  color: white;
+  color: var(--ink-dark);
 }
 
 .slot {
-  color: #555;
+  color: var(--ink-dark);
   border: none;
 }
 
 .kanji-part {
-  color: white;
+  color: var(--ink-dark);
   border: none;
 }
 
 .key {
-  color: white;
+  color: var(--ink-dark);
   border: none;
 }
 
 .plus {
-  color: white;
+  color: var(--ink-dark);
   font-family: serif;
 }
 
@@ -140,10 +136,9 @@ button {
   width: 86px;
   height: 64px;
 
-  background: black;
-  color: white;
-
-  border: 1px solid white;
+  background: var(--paper-light);
+  color: var(--ink-dark);
+  border: 1px solid var(--ink-dark);
 
   font-size: 24px;
 
@@ -154,8 +149,8 @@ button {
 }
 
 button:active {
-  background: white;
-  color: black;
+  background: var(--ink-dark);
+  color: var(--paper-light);
 }
 
 #restart {
@@ -168,7 +163,8 @@ button:active {
 
   inset: 0;
 
-  background: black;
+  background: var(--paper-light);
+  color: var(--ink-dark);
 
   display: none;
 
@@ -195,7 +191,8 @@ button:active {
   position: fixed;
   inset: 0;
 
-  background: black;
+  background: var(--paper-light);
+  color: var(--ink-dark);
 
   display: none;
 
@@ -211,7 +208,7 @@ button:active {
   position: absolute;
 
   font-size: 64px;
-  color: white;
+  color: var(--ink-dark);
   font-weight: bold;
 
   line-height: 1;
@@ -283,21 +280,23 @@ button:active {
 .tree,
 .mountain,
 .soil,
-.water,
-.slot {
-  color: #555;
+.water {
+  color: var(--paper-mid);
 }
 
-/* 動かせる文字 */
+/* 動かせる文字・操作ガイド */
 .player,
 .key,
-.kanji-part {
-  color: white;
+.kanji-part,
+.plus,
+.divide,
+.slot {
+  color: var(--ink-dark);
 }
 
 /* 門は動かないが、ゴールなので少し明るめ */
 .door {
-  color: white;;
+  color: var(--ink-dark);
   border: none;
 }
 
@@ -317,26 +316,20 @@ button:active {
 .mountain,
 .soil,
 .water,
-.plus,
-.slot {
-  color: #555;
+.guide {
+  color: var(--paper-dark);
 }
 
 /* 動かせる文字 */
 .player,
 .key,
 .kanji-part {
-  color: white;
+  color: var(--ink-dark);
 }
 
-/* 門はゴールなので中間色 */
+/* 扉は重要なので濃く */
 .door {
-  color: white;
-}
-
-/* スロットは文字として表示 */
-.slot {
-  color: #555;
+  color: var(--ink-dark);
 }
 
 #keyword-effect {
@@ -348,8 +341,8 @@ button:active {
   justify-content: center;
   align-items: center;
 
-  background: rgba(0, 0, 0, 0.85);
-  color: white;
+  background: rgba(200, 200, 168, 0.92);
+  color: var(--ink-dark);
 
   font-size: 48px;
   font-weight: bold;
@@ -411,7 +404,7 @@ button:active {
 }
 
 .guide {
-  color: #666;
+  color: var(--paper-mid);
 }
 
 .unlock-effect-layer {
@@ -431,7 +424,7 @@ button:active {
   align-items: center;
 
   font-size: 24px;
-  color: white;
+  color: var(--ink-dark);
 
   transition: transform 0.55s ease-in-out;
 }
@@ -446,7 +439,7 @@ button:active {
   align-items: center;
 
   font-size: 24px;
-  color: #aaa;
+  color: var(--paper-mid);
 
   animation: doorScatter 0.6s ease-out forwards;
 }
@@ -488,8 +481,8 @@ button:active {
   position: fixed;
   inset: 0;
 
-  background: black;
-  color: white;
+  background: var(--paper-light);
+  color: var(--ink-dark);
 
   display: flex;
   flex-direction: column;
@@ -509,7 +502,7 @@ button:active {
 
 #start-subtitle {
   font-size: 16px;
-  color: #aaa;
+  color: var(--paper-dark);
   letter-spacing: 2px;
   margin-bottom: 40px;
 }
@@ -521,10 +514,9 @@ button:active {
   font-size: 20px;
   letter-spacing: 2px;
 
-  background: black;
-  color: white;
-
-  border: 1px solid white;
+  background: var(--ink-dark);
+  color: var(--paper-light);
+  border: 1px solid var(--ink-dark);
 }
 
 body.game-not-started #message,
@@ -542,7 +534,7 @@ body.game-not-started #controls {
   gap: 14px;
 
   font-size: 14px;
-  color: #ccc;
+  color: var(--paper-mid);
 }
 
 .sound-row {
@@ -564,13 +556,13 @@ body.game-not-started #controls {
 .plus,
 .divide,
 .slot {
-  color: white;
+  color: var(--ink-dark);
   border: none;
 }
 
 #stage-label {
   margin-top: 8px;
-  color: #777;
+  color: var(--paper-dark);
   font-size: 12px;
   letter-spacing: 1px;
 }
@@ -584,8 +576,8 @@ body.game-not-started #controls {
   justify-content: center;
   align-items: center;
 
-  background: black;
-  color: white;
+  background: var(--paper-light);
+  color: var(--ink-dark);
 
   z-index: 40;
 }
@@ -662,7 +654,7 @@ body.game-not-started #controls {
 #start-help {
   margin-top: -20px;
   margin-bottom: 32px;
-  color: #777;
+  color: var(--paper-dark);
   font-size: 13px;
   letter-spacing: 1px;
 }
@@ -683,8 +675,8 @@ body.game-not-started #controls {
   width: 24px;
   height: 24px;
 
-  border: 1px solid white;
-  background: black;
+  border: 1px solid var(--ink-dark);
+  background: var(--paper-light);
   position: relative;
 }
 
@@ -698,7 +690,7 @@ body.game-not-started #controls {
   width: 8px;
   height: 14px;
 
-  border: solid white;
+  border-color: var(--ink-dark);
   border-width: 0 3px 3px 0;
 
   transform: rotate(45deg);
@@ -709,7 +701,7 @@ body.game-not-started #controls {
   -webkit-appearance: none;
 
   height: 4px;
-  background: #444;
+  background: var(--paper-dark);
   border-radius: 999px;
   outline: none;
 }
@@ -721,8 +713,8 @@ body.game-not-started #controls {
   width: 18px;
   height: 18px;
 
-  background: white;
-  border: 1px solid white;
+  background: var(--ink-dark);
+  border: 1px solid var(--ink-dark);
   border-radius: 50%;
 }
 
@@ -730,8 +722,8 @@ body.game-not-started #controls {
   width: 18px;
   height: 18px;
 
-  background: white;
-  border: 1px solid white;
+  color: var(--ink-dark);
+  border: 1px solid var(--ink-dark);
   border-radius: 50%;
 }
 
@@ -749,11 +741,10 @@ body.game-not-started #controls {
 
   margin-bottom: 24px;
 
-  border: 1px solid white;
+  background: var(--paper-light);
+  color: var(--ink-dark);
+  border: 1px solid var(--ink-dark);
   border-radius: 999px;
-
-  background: black;
-  color: white;
 
   font-size: 22px;
   line-height: 1;
@@ -774,10 +765,9 @@ body.game-not-started #controls {
 
   padding: 24px;
 
-  background: black;
-  color: white;
-
-  border: 1px solid white;
+  background: var(--paper-light);
+  color: var(--ink-dark);
+  border: 1px solid var(--ink-dark);
 
   z-index: 120;
 }
@@ -803,7 +793,7 @@ body.game-not-started #controls {
   gap: 16px;
 
   font-size: 14px;
-  color: #ccc;
+  color: var(--paper-mid);
 }
 
 #sound-popup .sound-row {
@@ -817,7 +807,7 @@ body.game-not-started #controls {
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(40, 40, 24, 0.45);
 
   z-index: 110;
 }
@@ -825,3 +815,4 @@ body.game-not-started #controls {
 #sound-backdrop.hidden {
   display: none;
 }
+

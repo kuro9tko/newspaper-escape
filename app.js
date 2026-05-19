@@ -15,7 +15,7 @@ const SLOT = "⬜︎";
 
 const SIX = "六";
 const FIVE = "五";
-const TEN = "十";
+const TEN = "＋";
 const MOUTH = "口";
 const PLUS = "＋";
 const DIVIDE = "÷";
@@ -63,15 +63,15 @@ const stages = [
     message: "漢字を組み立てる",
     clearMessage: "扉がひらいた。",
     map: [
-      [TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE],
-      [TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE],
+      [GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
       [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
       [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
       [PLAYER,EMPTY,KANE,SLOT,PLUS,KEN,EMPTY,EMPTY,DOOR],
       [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
       [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
-      [TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE],
-      [TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE,TREE],
+      [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
+      [GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE,GUIDE],
     ],
     combineRules: [
       {
@@ -326,7 +326,7 @@ function startStage(index) {
 
   const message = document.getElementById("message");
   if (message) {
-    message.style.color = "white";
+    message.style.color = "var(--ink-dark)";
   }
 
   setMessage(stage.message);
@@ -722,13 +722,13 @@ function gameOver() {
 
   setMessage("GAME OVER");
 
-  document.getElementById("message").style.color = "red";
+  document.getElementById("message").style.color = "var(--ink-dark)";
 
   setTimeout(() => {
 
     restartStage();
 
-    document.getElementById("message").style.color = "white";
+    document.getElementById("message").style.color = "var(--ink-dark)";
 
   }, 1500);
 }
