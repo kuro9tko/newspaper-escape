@@ -123,8 +123,8 @@ const stages = [
   },
   {
     name: "六五",
-    message: "何を割る？",
-    clearMessage: "65周年、そしてその先へ。皆様に心から感謝申し上げます。",
+    message: "われ",
+    clearMessage: "その先へ。皆様に心から感謝申し上げます。<br><br>True Ending",
     map: [
       [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,DOOR],
       [EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY],
@@ -1172,7 +1172,7 @@ function showFinalClearText() {
   const clearText = document.getElementById("clear-text");
 
   if (clearText) {
-    clearText.innerHTML = "65周年、そしてその先へ。<br><br>皆様に心から感謝申し上げます。";
+    clearText.innerHTML = "65周年、そしてその先へ。<br><br>皆様に心から感謝申し上げます。<br><br>Normal Ending";
   }
 
   const overlay = document.getElementById("overlay");
@@ -1445,9 +1445,9 @@ function showTrueEnding() {
 
   if (clearText) {
     clearText.innerHTML =
-      "六十五周年、そしてその先へ。<br><br>" +
-      "これからも、地域とともに。<br><br>" +
-      "皆様に心から感謝申し上げます。";
+      "読むことで、見えてくる答えがある。<br><br>" +
+      "その発見が、次の挑戦につながっていく。<br><br>" +
+      "True Ending";
   }
 
   const overlay = document.getElementById("overlay");
