@@ -96,7 +96,7 @@ button {
 }
 
 .slot {
-  color: var(--ink-dark);
+  color: var(--paper-mid);
   border: none;
 }
 
@@ -310,9 +310,11 @@ button:active {
 .key,
 .kanji-part,
 .plus,
-.divide,
-.slot {
+.divide{
   color: var(--ink-dark);
+}
+.slot {
+  color: var(--paper-mid);
 }
 
 /* 門は動かないが、ゴールなので少し明るめ */
@@ -575,8 +577,7 @@ body.game-not-started #controls {
 }
 
 .plus,
-.divide,
-.slot {
+.divide{
   color: var(--ink-dark);
   border: none;
 }
