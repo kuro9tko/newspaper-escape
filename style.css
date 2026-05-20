@@ -518,13 +518,13 @@ button:active {
 }
 
 #start-title {
-  font-size: 40px;
+  font-size: 16px;
   letter-spacing: 4px;
   margin-bottom: 20px;
 }
 
 #start-subtitle {
-  font-size: 16px;
+  font-size: 32px;
   color: var(--paper-dark);
   letter-spacing: 2px;
   margin-bottom: 40px;
@@ -980,7 +980,7 @@ body.game-not-started #controls {
 }
 
 #start-title {
-  font-size: clamp(26px, 5vw, 42px);
+  font-size: clamp(16px, 5vw, 26px);
   letter-spacing: 3px;
   line-height: 1.3;
 
@@ -991,7 +991,7 @@ body.game-not-started #controls {
 }
 
 #start-subtitle {
-  font-size: clamp(14px, 2.6vw, 18px);
+  font-size: clamp(16px, 2.6vw, 32px);
   color: var(--paper-dark);
   letter-spacing: 2px;
 
