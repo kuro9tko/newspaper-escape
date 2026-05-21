@@ -335,8 +335,12 @@ function startStage(index) {
   console.log(map);
 
   const stageLabel = document.getElementById("stage-label");
+
   if (stageLabel) {
-    stageLabel.textContent = `${currentStageIndex + 1} / ${stages.length}`;
+    const stageLabels = ["一面", "二面", "三面", "最終面"];
+
+    stageLabel.textContent =
+      stageLabels[currentStageIndex] || `${currentStageIndex + 1} / ${stages.length}`;
   }
 
   draw();
@@ -895,7 +899,9 @@ function checkKeywordRule() {
 
   if (rule.done) return;
 
-  const found = findWordHorizontal(rule.word);
+  const found =
+    findWordHorizontal(rule.word) ||
+    findWordVertical(rule.word);
 
   if (!found) return;
 
@@ -905,17 +911,31 @@ function checkKeywordRule() {
   playSound("correct");
 
   showKeywordEffect(() => {
-    const wordY = found.y;
-    const wordStartX = found.x;
-    const wordEndX = found.x + rule.word.length - 1;
+    if (found.direction === "horizontal") {
+      const y = found.y;
+      const startX = found.x;
+      const endX = found.x + rule.word.length - 1;
 
-    // まず「読 売 新 聞」を消す
-    for (let i = 0; i < rule.word.length; i++) {
-      map[wordY][wordStartX + i] = EMPTY;
+      for (let i = 0; i < rule.word.length; i++) {
+        map[y][startX + i] = EMPTY;
+      }
+
+      // 横なら右端、つまり「聞」があった位置に鍵
+      map[y][endX] = rule.result;
     }
 
-    // 右端、「聞」があった位置に鍵を出す
-    map[wordY][wordEndX] = rule.result;
+    if (found.direction === "vertical") {
+      const x = found.x;
+      const startY = found.y;
+      const endY = found.y + rule.word.length - 1;
+
+      for (let i = 0; i < rule.word.length; i++) {
+        map[startY + i][x] = EMPTY;
+      }
+
+      // 縦なら下端、つまり「聞」があった位置に鍵
+      map[endY][x] = rule.result;
+    }
 
     draw();
   });
@@ -1164,7 +1184,7 @@ function findWordVertical(word) {
       }
 
       if (matched) {
-        return { x, y };
+        return { x, y, direction: "vertical" };
       }
     }
   }
@@ -1201,7 +1221,11 @@ function findWordHorizontal(word) {
       }
 
       if (matched) {
-        return { x, y };
+        return {
+          x,
+          y,
+          direction: "horizontal"
+        };
       }
     }
   }
@@ -1434,7 +1458,11 @@ function findWordVertical(word) {
       }
 
       if (matched) {
-        return { x, y };
+        return {
+          x,
+          y,
+          direction: "vertical"
+        };
       }
     }
   }

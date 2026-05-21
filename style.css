@@ -1029,3 +1029,24 @@ body.game-not-started #controls {
   font-size: 22px;
   letter-spacing: 3px;
 }
+
+.key-appear {
+  animation: keyAppear 0.6s ease-out;
+}
+
+@keyframes keyAppear {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
