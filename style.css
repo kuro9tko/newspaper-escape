@@ -961,24 +961,7 @@ body.game-not-started #quit-button {
   gap: 64px;
 }
 
-#restart {
-  position: absolute;
-  right: 0;
-  top: 0;
 
-  width: 44px;
-  height: 44px;
-
-  margin: 0;
-  padding: 0;
-
-  font-size: 22px;
-  line-height: 1;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 /* ===== Start screen layout ===== */
 
@@ -1203,20 +1186,290 @@ body.game-not-started #quit-button {
   color: var(--ink-dark);
 }
 
-#quit-button {
-  position: fixed;
-  top: 12px;
-  right: 12px;
+#system-buttons {
+  margin-top: 12px;
 
-  width: auto;
-  height: 36px;
-  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  font-size: 13px;
+  gap: 8px;
+}
+
+.system-button {
+  width: 64px;
+  height: 64px;
+
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   background: var(--paper-light);
   color: var(--ink-dark);
+
   border: 1px solid var(--ink-dark);
 
-  z-index: 50;
+  font-size: 28px;
+  line-height: 1;
+}
+
+
+/* ===== System buttons: title / restart ===== */
+
+#system-buttons {
+  margin-top: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+}
+
+#system-buttons button,
+#quit-button,
+#restart {
+  width: 64px;
+  height: 64px;
+
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--paper-light);
+  color: var(--ink-dark);
+
+  border: 1px solid var(--ink-dark);
+
+  font-size: 28px;
+  line-height: 1;
+
+  box-sizing: border-box;
+}
+
+/* ===== System buttons: align to game right ===== */
+
+#system-buttons {
+  width: calc(var(--tile-size, 42px) * 9 + 12px);
+  margin-top: 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 8px;
+}
+
+#system-buttons button,
+#quit-button,
+#restart {
+  width: 44px;
+  height: 44px;
+
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--paper-light);
+  color: var(--ink-dark);
+
+  border: 1px solid var(--ink-dark);
+
+  font-size: 22px;
+  line-height: 1;
+
+  box-sizing: border-box;
+}
+
+#system-buttons {
+  width: calc(var(--tile-size, 42px) * 9 + 12px);
+  margin-top: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  gap: 8px;
+}
+
+#system-buttons button,
+#quit-button,
+#restart {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  font-size: 22px;
+}
+
+#controls {
+  width: calc(var(--tile-size, 42px) * 9 + 12px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#move-controls {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+#move-controls .middle {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+#controls {
+  width: calc(var(--tile-size, 42px) * 9 + 12px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#control-row {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#move-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+#move-controls .middle {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+#system-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: auto;
+  margin: 0;
+
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+#system-buttons button,
+#quit-button,
+#restart {
+  width: 44px;
+  height: 44px;
+
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 22px;
+  line-height: 1;
+
+  box-sizing: border-box;
+}
+
+/* ===== System buttons: vertical right side ===== */
+
+#controls {
+  width: calc(var(--tile-size, 42px) * 9 + 12px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#control-row {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#move-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+#move-controls .middle {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* ここが変更ポイント */
+#system-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: auto;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 8px;
+}
+
+#system-buttons button,
+#quit-button,
+#restart {
+  width: 44px;
+  height: 44px;
+
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--paper-light);
+  color: var(--ink-dark);
+
+  border: 1px solid var(--ink-dark);
+
+  font-size: 22px;
+  line-height: 1;
+
+  box-sizing: border-box;
 }
