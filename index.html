@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="game-not-started">
+  <button id="quit-button">タイトルへ</button>
+
   <div id="start-screen">
     <img
       id="start-logo"
@@ -37,18 +39,8 @@
 
       <div id="sound-settings">
         <label class="sound-row">
-          <span>BGM</span>
-          <input id="bgm-toggle" type="checkbox" checked>
-        </label>
-
-        <label class="sound-row">
           <span>BGM音量</span>
           <input id="bgm-volume" type="range" min="0" max="1" step="0.05" value="0.35">
-        </label>
-
-        <label class="sound-row">
-          <span>SE</span>
-          <input id="se-toggle" type="checkbox" checked>
         </label>
 
         <label class="sound-row">
@@ -62,7 +54,7 @@
       START
     </button>
   </div>
-
+  
   <div id="message"></div>
   <div id="stage-label"></div>
 
@@ -87,6 +79,8 @@
 
   </div>
 
+  <div id="stage-transition"></div>
+
   <div id="overlay">
     <div id="clear-text">
       65周年、そしてその先へ。<br><br>
@@ -102,6 +96,11 @@
   <div id="door-effect">
     <div id="door-left">門</div>
     <div id="door-right">門</div>
+  </div>
+
+  <div id="stage-door-transition">
+    <div id="stage-door-left">扉</div>
+    <div id="stage-door-right">扉</div>
   </div>
 
   <script src="app.js"></script>

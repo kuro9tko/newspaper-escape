@@ -401,30 +401,53 @@ button:active {
 }
 
 .player-start-hint {
-  animation: playerStartHint 0.22s ease-in-out infinite;
+  animation: playerReady 1.05s ease-in-out forwards;
+  will-change: transform;
 }
 
-@keyframes playerStartHint {
+@keyframes playerReady {
   0% {
     transform: translate(0, 0);
   }
 
-  25% {
+  10% {
     transform: translate(-2px, 0);
   }
 
-  50% {
+  20% {
     transform: translate(2px, 0);
   }
 
-  75% {
+  30% {
     transform: translate(-2px, 0);
+  }
+
+  40% {
+    transform: translate(2px, 0);
+  }
+
+  50% {
+    transform: translate(0, 0);
+  }
+
+  68% {
+    transform: translate(0, -20px);
+  }
+
+  82% {
+    transform: translate(0, 0);
+  }
+
+  91% {
+    transform: translate(0, -3px);
   }
 
   100% {
     transform: translate(0, 0);
   }
 }
+
+
 
 .guide {
   color: var(--paper-mid);
@@ -544,7 +567,8 @@ button:active {
 
 body.game-not-started #message,
 body.game-not-started #game-container,
-body.game-not-started #controls {
+body.game-not-started #controls,
+body.game-not-started #quit-button {
   display: none;
 }
 
@@ -567,10 +591,10 @@ body.game-not-started #controls {
   gap: 12px;
 }
 
-.sound-row input[type="checkbox"] {
+/* .sound-row input[type="checkbox"] {
   width: 24px;
   height: 24px;
-}
+} */
 
 .sound-row input[type="range"] {
   width: 100%;
@@ -1049,4 +1073,150 @@ body.game-not-started #controls {
     transform: scale(1);
     opacity: 1;
   }
+}
+
+#stage-transition {
+  position: fixed;
+  inset: 0;
+
+  background: var(--ink-dark);
+
+  opacity: 0;
+  pointer-events: none;
+
+  z-index: 90;
+
+  transition: opacity 0.45s ease-in-out;
+}
+
+#stage-transition.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== Stage door transition ===== */
+
+#stage-door-transition {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  background: var(--paper-light);
+
+  z-index: 90;
+  pointer-events: none;
+}
+
+#stage-door-transition.active {
+  display: flex;
+}
+
+#stage-door-left,
+#stage-door-right {
+  position: absolute;
+
+  font-size: 72px;
+  font-weight: bold;
+  color: var(--ink-dark);
+
+  line-height: 1;
+
+  opacity: 1;
+  transform: scale(1);
+}
+
+#stage-door-left {
+  clip-path: inset(0 50% 0 0);
+}
+
+#stage-door-right {
+  clip-path: inset(0 0 0 50%);
+}
+
+#stage-door-transition.active #stage-door-left {
+  animation: stageDoorLeftOpen 1.15s ease-in-out forwards;
+}
+
+#stage-door-transition.active #stage-door-right {
+  animation: stageDoorRightOpen 1.15s ease-in-out forwards;
+}
+
+@keyframes stageDoorLeftOpen {
+  0% {
+    transform: scale(1) translateX(0);
+    opacity: 0;
+  }
+
+  20% {
+    transform: scale(1.2) translateX(0);
+    opacity: 1;
+  }
+
+  55% {
+    transform: scale(4) translateX(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(4) translateX(-80px);
+    opacity: 0;
+  }
+}
+
+@keyframes stageDoorRightOpen {
+  0% {
+    transform: scale(1) translateX(0);
+    opacity: 0;
+  }
+
+  20% {
+    transform: scale(1.2) translateX(0);
+    opacity: 1;
+  }
+
+  55% {
+    transform: scale(4) translateX(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(4) translateX(80px);
+    opacity: 0;
+  }
+}
+
+#sound-popup #sound-settings {
+  gap: 26px;
+}
+
+#sound-popup .sound-row {
+  grid-template-columns: 90px 1fr;
+  gap: 18px;
+  margin-bottom: 0;
+}
+
+#sound-popup .sound-row span {
+  color: var(--ink-dark);
+}
+
+#quit-button {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+
+  width: auto;
+  height: 36px;
+  padding: 0 12px;
+
+  font-size: 13px;
+
+  background: var(--paper-light);
+  color: var(--ink-dark);
+  border: 1px solid var(--ink-dark);
+
+  z-index: 50;
 }

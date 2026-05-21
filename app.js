@@ -357,7 +357,7 @@ function initGame() {
 
 function restartStage() {
   restartBgmFromBeginning();
-  startStage(currentStageIndex);
+  transitionToStage(currentStageIndex);
 }
 
 function draw() {
@@ -846,6 +846,51 @@ function createDoorScatterEffect(doorX, doorY) {
   });
 }
 
+function transitionToStage(nextStageIndex) {
+  const transition = document.getElementById("stage-transition");
+
+  if (!transition) {
+    startStage(nextStageIndex);
+    return;
+  }
+
+  transition.classList.add("active");
+
+  setTimeout(() => {
+    startStage(nextStageIndex);
+
+    setTimeout(() => {
+      transition.classList.remove("active");
+    }, 120);
+  }, 450);
+}
+
+function transitionToStageWithDoor(nextStageIndex) {
+  const transition = document.getElementById("stage-door-transition");
+
+  if (!transition) {
+    startStage(nextStageIndex);
+    return;
+  }
+
+  transition.classList.remove("active");
+  transition.style.display = "flex";
+
+  // アニメーション再実行用
+  void transition.offsetWidth;
+
+  transition.classList.add("active");
+
+  setTimeout(() => {
+    startStage(nextStageIndex);
+  }, 650);
+
+  setTimeout(() => {
+    transition.classList.remove("active");
+    transition.style.display = "none";
+  }, 1200);
+}
+
 function clearStage() {
   const stage = stages[currentStageIndex];
 
@@ -857,12 +902,12 @@ function clearStage() {
 
   if (nextStageIndex < stages.length) {
     setTimeout(() => {
-      startStage(nextStageIndex);
-    }, 1400);
+      transitionToStageWithDoor(nextStageIndex);
+    }, 700);
   } else {
     setTimeout(() => {
       clearGame();
-    }, 1400);
+    }, 900);
   }
 }
 
@@ -1272,47 +1317,26 @@ function showKeywordEffect(onComplete) {
       effect.style.display = "none";
 
       if (onComplete) onComplete();
-    }, 800);
-  }, 900);
+    }, 900);
+  }, 1000);
 }
 
 function setupSoundSettingsUI() {
-  const bgmToggle = document.getElementById("bgm-toggle");
-  const seToggle = document.getElementById("se-toggle");
   const bgmVolume = document.getElementById("bgm-volume");
   const seVolume = document.getElementById("se-volume");
 
-  if (!bgmToggle || !seToggle || !bgmVolume || !seVolume) {
+  if (!bgmVolume || !seVolume) {
     return;
   }
 
-  bgmToggle.checked = soundSettings.bgmEnabled;
-  seToggle.checked = soundSettings.seEnabled;
   bgmVolume.value = soundSettings.bgmVolume;
   seVolume.value = soundSettings.seVolume;
 
-  bgmToggle.addEventListener("change", () => {
-    soundSettings.bgmEnabled = bgmToggle.checked;
-
-    if (!soundSettings.bgmEnabled) {
-      sounds.bgm.pause();
-    } else if (bgmStarted) {
-      sounds.bgm.play().catch(() => {});
-    }
-
-    applySoundSettings();
-    saveSoundSettings();
-  });
-
-  seToggle.addEventListener("change", () => {
-    soundSettings.seEnabled = seToggle.checked;
-
-    applySoundSettings();
-    saveSoundSettings();
-  });
-
   bgmVolume.addEventListener("input", () => {
     soundSettings.bgmVolume = Number(bgmVolume.value);
+
+    // スライダーが0ならBGM無音、0より上なら有効扱い
+    soundSettings.bgmEnabled = soundSettings.bgmVolume > 0;
 
     applySoundSettings();
     saveSoundSettings();
@@ -1320,6 +1344,9 @@ function setupSoundSettingsUI() {
 
   seVolume.addEventListener("input", () => {
     soundSettings.seVolume = Number(seVolume.value);
+
+    // スライダーが0ならSE無音、0より上なら有効扱い
+    soundSettings.seEnabled = soundSettings.seVolume > 0;
 
     applySoundSettings();
     saveSoundSettings();
@@ -1514,6 +1541,25 @@ window.addEventListener("load", () => {
     });
   }
 });
+
+const quitButton = document.getElementById("quit-button");
+
+if (quitButton) {
+  quitButton.addEventListener("pointerdown", event => {
+    event.preventDefault();
+
+    sounds.bgm.pause();
+    sounds.bgm.currentTime = 0;
+    bgmStarted = false;
+
+    document.body.classList.add("game-not-started");
+
+    const startScreen = document.getElementById("start-screen");
+    if (startScreen) {
+      startScreen.style.display = "flex";
+    }
+  });
+}
 
 document.querySelectorAll(".move").forEach(button => {
   button.addEventListener("pointerdown", event => {
